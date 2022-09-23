@@ -163,12 +163,17 @@ void menu_main(){
 	else if(select==3){
 		menu_exit();
 	}
+	else{
+		menu_main();
+	}
 }
 
 void menu_pvc(){
 	system("clear");
 	char ox[6][7],select[100],sp,cp,plwin[1000];
 	int round,bRound=0;
+	int tempRow,tempCol,rRound=0,rRow;
+	int reXo[11][2];
 	for(int i=0;i<6;i++){
 		for(int j=0;j<7;j++){
 			ox[i][j] = ' ';
@@ -198,11 +203,40 @@ void menu_pvc(){
 			printf("Player, your turn!\n\n");
 			printf("Where do you want to go(A-G)?\n");
 			scanf("%s",pick);
+			//Player drop
 			drop = pick[0]-'A';
 			for(int i=5;i>=0;i--){
 				if(ox[i][drop]==' '){
 					ox[i][drop]=sp;
+					rRow = i;
 					break;
+				}
+			}
+			//remove ox over 11 round
+			reXo[rRound][0] = rRow;
+			reXo[rRound][1] = drop;
+			if(rRound==10){
+				ox[reXo[0][0]][reXo[0][1]] = ' ';
+				for(int i=0;i<=10;i++){
+					if(reXo[i][1] == reXo[0][1]){
+						reXo[i][0]++;
+					}
+				}
+				for(int i=1;i<=10;i++){
+					tempRow=reXo[i][0];
+					tempCol=reXo[i][1];
+					reXo[i-1][0] = tempRow;
+					reXo[i-1][1] = tempCol;
+				}
+				rRound--;
+			}
+			//check ox flow to space
+			for(int i=4;i>=0;i--){
+				for(int j=0;j<7;j++){
+					if(ox[i][j]!=' ' && ox[i+1][j]==' '){
+						ox[i+1][j]=ox[i][j];
+						ox[i][j]=' ';
+					}
 				}
 			}
 			if(is_bingo(ox)){
@@ -211,11 +245,40 @@ void menu_pvc(){
 			}
 		}
 		else if(round==1){
+			//Computer Drop
 			drop = comp_select(ox);
 			for(int i=5;i>=0;i--){
 				if(ox[i][drop]==' '){
 					ox[i][drop]=cp;
+					rRow = i;
 					break;
+				}
+			}
+			//remove ox over 11 round
+			reXo[rRound][0] = rRow;
+			reXo[rRound][1] = drop;
+			if(rRound==10){
+				ox[reXo[0][0]][reXo[0][1]] = ' ';
+				for(int i=0;i<=10;i++){
+					if(reXo[i][1] == reXo[0][1]){
+						reXo[i][0]++;
+					}
+				}
+				for(int i=1;i<=10;i++){
+					tempRow=reXo[i][0];
+					tempCol=reXo[i][1];
+					reXo[i-1][0] = tempRow;
+					reXo[i-1][1] = tempCol;
+				}
+				rRound--;
+			}
+			//check ox flow to space
+			for(int i=4;i>=0;i--){
+				for(int j=0;j<7;j++){
+					if(ox[i][j]!=' ' && ox[i+1][j]==' '){
+						ox[i+1][j]=ox[i][j];
+						ox[i][j]=' ';
+					}
 				}
 			}
 			if(is_bingo(ox)){
@@ -226,6 +289,8 @@ void menu_pvc(){
 		round=!round;
     if(bRound==29 || bRound==31) round=!round;
 		if(bRound==32) bRound=0;
+		rRound++;
+		if(rRound==11) rRound=0;
 	}
 	menu_pvc_result(ox,plwin);
 }
@@ -234,8 +299,8 @@ void menu_pvp(){
 	system("clear");
 	char ox[6][7];
 	char p1[1000],p2[1000],plwin[1000];
-	int round = 0,bRound = 0,rRound=0,rRow;
-	int tempRow,tempCol;
+	int round = 0,bRound = 0;
+	int tempRow,tempCol,rRound=0,rRow;
 	int reXo[11][2];
 	for(int i=0;i<6;i++){
 		for(int j=0;j<7;j++){
@@ -258,6 +323,7 @@ void menu_pvp(){
 		else printf("%s, your turn!\n\n",p2);
 		printf("Where do you want to go(A-G)?\n");
 		scanf("%s",pick);
+		//Drop ox
 		drop = pick[0]-'A';
 		if(round==0) oxb='X';
 		else oxb='O';
@@ -268,21 +334,25 @@ void menu_pvp(){
 				break;
 			}
 		}
+		//remov ox over 11 round
+		reXo[rRound][0] = rRow;
+		reXo[rRound][1] = drop;
 		if(rRound==10){
-			// printf("<%d %d>",reXo[0][0],reXo[0][1]);
 			ox[reXo[0][0]][reXo[0][1]] = ' ';
-			for(int i=1;i<=11;i++){
-				 tempRow=reXo[i][0];
-				 tempCol=reXo[i][1];
-				 reXo[i-1][0] = tempRow;
-				 reXo[i-1][1] = tempCol;
+			for(int i=0;i<=10;i++){
+				if(reXo[i][1] == reXo[0][1]){
+					reXo[i][0]++;
+				}
+			}
+			for(int i=1;i<=10;i++){
+				tempRow=reXo[i][0];
+				tempCol=reXo[i][1];
+				reXo[i-1][0] = tempRow;
+				reXo[i-1][1] = tempCol;
 			}
 			rRound--;
 		}
-		else{
-			reXo[rRound][0] = rRow;
-			reXo[rRound][1] = drop;
-		}
+		//check ox flow to space
 		for(int i=4;i>=0;i--){
 			for(int j=0;j<7;j++){
 				if(ox[i][j]!=' ' && ox[i+1][j]==' '){
@@ -291,6 +361,7 @@ void menu_pvp(){
 				}
 			}
 		}
+		//check when bingo
     if(is_bingo(ox)){
       if(round==0) strcpy(plwin,p1);
       else if(round==1) strcpy(plwin,p2);
