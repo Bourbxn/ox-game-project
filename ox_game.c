@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 
 //define function
@@ -233,7 +234,9 @@ void menu_pvp(){
 	system("clear");
 	char ox[6][7];
 	char p1[1000],p2[1000],plwin[1000];
-	int round = 0,bRound = 0;
+	int round = 0,bRound = 0,rRound=0,rRow;
+	int tempRow,tempCol;
+	int reXo[11][2];
 	for(int i=0;i<6;i++){
 		for(int j=0;j<7;j++){
 			ox[i][j] = ' ';
@@ -261,7 +264,31 @@ void menu_pvp(){
 		for(int i=5;i>=0;i--){
 			if(ox[i][drop]==' '){
 				ox[i][drop]=oxb;
+				rRow = i;
 				break;
+			}
+		}
+		if(rRound==10){
+			// printf("<%d %d>",reXo[0][0],reXo[0][1]);
+			ox[reXo[0][0]][reXo[0][1]] = ' ';
+			for(int i=1;i<=11;i++){
+				 tempRow=reXo[i][0];
+				 tempCol=reXo[i][1];
+				 reXo[i-1][0] = tempRow;
+				 reXo[i-1][1] = tempCol;
+			}
+			rRound--;
+		}
+		else{
+			reXo[rRound][0] = rRow;
+			reXo[rRound][1] = drop;
+		}
+		for(int i=4;i>=0;i--){
+			for(int j=0;j<7;j++){
+				if(ox[i][j]!=' ' && ox[i+1][j]==' '){
+					ox[i+1][j]=ox[i][j];
+					ox[i][j]=' ';
+				}
 			}
 		}
     if(is_bingo(ox)){
@@ -272,6 +299,8 @@ void menu_pvp(){
 		round=!round;
 		if(bRound==29 || bRound==31) round=!round;
 		if(bRound==32) bRound=0;
+		rRound++;
+		if(rRound==11) rRound=0;
 	}
   menu_pvp_result(ox,plwin);
 }
@@ -288,6 +317,7 @@ void ox_game(){
 
 //main
 int main(){
+	srand(time(NULL));
 	ox_game();
 	return 0;
 }
