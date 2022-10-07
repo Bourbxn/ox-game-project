@@ -11,6 +11,10 @@ void menu_pvp();
 void menu_exit();
 
 //render
+void clear(){
+  system("cls");
+}
+
 void render_menu(){
 	printf(" ,-----.,--.   ,--.     ,----.\n");
 	printf("'  .-.  '\\  `.'  /     '  .-./    ,--,--.,--,--,--. ,---.\n");
@@ -123,7 +127,7 @@ int comp_select(char ox[6][7]){
 
 //sub menu
 void menu_pvp_result(char ox[6][7],char pl[1000]){
-  system("clear");
+  clear();
   int select;
   render_pvp_result(ox,pl);
   scanf("%d",&select);
@@ -136,7 +140,7 @@ void menu_pvp_result(char ox[6][7],char pl[1000]){
 }
 
 void menu_pvc_result(char ox[6][7],char pl[1000]){
-  system("clear");
+  clear();
   int select;
   render_pvp_result(ox,pl);
   scanf("%d",&select);
@@ -150,7 +154,7 @@ void menu_pvc_result(char ox[6][7],char pl[1000]){
 
 //menu
 void menu_main(){
-  system("clear");
+  clear();
 	int select;
 	render_menu();
 	scanf("%d",&select);
@@ -169,7 +173,7 @@ void menu_main(){
 }
 
 void menu_pvc(){
-	system("clear");
+  clear();
 	char ox[6][7],select[100],sp,cp,plwin[1000];
 	int round,bRound=0;
 	int tempRow,tempCol,rRound=0,rRow;
@@ -194,12 +198,12 @@ void menu_pvc(){
 	}
 	while(1){
 		bRound++;
-		system("clear");
+    clear();
 		char pick[1];
 		int drop;
 		render_board(ox);
 		if(round==0){
-			if(bRound==30 || bRound==32) printf("!!! BONUS TURN !!!\n");
+			if(bRound==10 || bRound==12) printf("!!! BONUS TURN !!!\n");
 			printf("Player, your turn!\n\n");
 			printf("Where do you want to go(A-G)?\n");
 			scanf("%s",pick);
@@ -287,16 +291,16 @@ void menu_pvc(){
 			}
 		}
 		round=!round;
-    if(bRound==29 || bRound==31) round=!round;
-		if(bRound==32) bRound=0;
+    if(bRound==9 || bRound==11) round=!round;
+		if(bRound==12) bRound=0;
 		rRound++;
-		if(rRound==11) rRound=0;
+		if(rRound==12) rRound=0;
 	}
 	menu_pvc_result(ox,plwin);
 }
 
 void menu_pvp(){
-	system("clear");
+  clear();
 	char ox[6][7];
 	char p1[1000],p2[1000],plwin[1000];
 	int round = 0,bRound = 0;
@@ -318,7 +322,7 @@ void menu_pvp(){
 		char pick[1],oxb;
 		int drop;
 		render_board(ox);
-		if(bRound==30 || bRound==32) printf("!!! BONUS TURN !!!\n");
+		if(bRound==10 || bRound==12) printf("!!! BONUS TURN !!!\n");
 		if(round==0) printf("%s, your turn!\n\n",p1);
 		else printf("%s, your turn!\n\n",p2);
 		printf("Where do you want to go(A-G)?\n");
@@ -368,8 +372,8 @@ void menu_pvp(){
       break;
     }
 		round=!round;
-		if(bRound==29 || bRound==31) round=!round;
-		if(bRound==32) bRound=0;
+		if(bRound==9 || bRound==11) round=!round;
+		if(bRound==12) bRound=0;
 		rRound++;
 		if(rRound==11) rRound=0;
 	}
@@ -377,7 +381,7 @@ void menu_pvp(){
 }
 
 void menu_exit(){
-	system("clear");
+  clear();
 	exit(0);
 }
 
